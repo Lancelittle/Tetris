@@ -1,0 +1,152 @@
+﻿<Window x:Class="Tetris.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" MinHeight="700" MinWidth="650" MaxHeight="700" MaxWidth="650"
+        Icon="{StaticResource Icon}"
+        KeyDown="ButtonPressed"
+        WindowStartupLocation="Manual" Left="0" Top="0">
+
+    <Window.Resources>
+        <Style TargetType="{x:Type Label}" x:Key="MyLabelStyle">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Label.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard RepeatBehavior="Forever">
+                            <ColorAnimation Storyboard.TargetProperty="Foreground" From="Crimson" To="Yellow" Duration="0:0:5" />
+                            <ColorAnimation Storyboard.TargetProperty="Foreground" From="Yellow" To="Green" Duration="0:0:5" />
+                            <ColorAnimation Storyboard.TargetProperty="Foreground" From="Green" To="Blue" Duration="0:0:5" />
+                            <ColorAnimation Storyboard.TargetProperty="Foreground" From="Blue" To="Purple" Duration="0:0:5" />
+                            <ColorAnimation Storyboard.TargetProperty="Foreground" From="Purple" To="Crimson" Duration="0:0:5" />                              
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+               
+       <Style TargetType="{x:Type Button}" x:Key="MyButtonStyle">
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Button.MouseEnter">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.Opacity)" From=".5" To="1" Duration="0:0:0.1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+
+                <EventTrigger RoutedEvent="Button.MouseLeave">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(Button.Opacity)" To=".5" Duration="0:0:0.1" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+
+                <EventTrigger RoutedEvent="Click">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Width" To="78" Duration="0:0:0:0.2" AutoReverse="True"/>
+                            <DoubleAnimation Storyboard.TargetProperty="Height" To="78" Duration="0:0:0:0.2" AutoReverse="True"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Canvas Name="myCanvas">
+        <Canvas.Background>
+            <ImageBrush ImageSource="{StaticResource Background}" Stretch="Fill"/>
+        </Canvas.Background>
+        <Image Name="ConnectImage" Source="{StaticResource TetrisLogo}" HorizontalAlignment="Right" Height="120" Width="400" Canvas.Left="238" Canvas.Top="4"/>
+        <Label Name="scoreLabel" Canvas.Top="125" Canvas.Right="70" Height="100" Width="232" Canvas.Left="338" FontSize="40" FontFamily="Arial" Content="Score: 0" Foreground="Yellow">
+            <TextBlock.Foreground>
+                <SolidColorBrush x:Name="MySolidColorBrush1" Color="Crimson"/>
+            </TextBlock.Foreground>
+
+            <Label.Triggers>
+                <EventTrigger RoutedEvent="TextBlock.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard >
+                            <ColorAnimation Storyboard.TargetName="MySolidColorBrush1" Storyboard.TargetProperty="Color" From="LawnGreen" To="Red" RepeatBehavior="Forever" AutoReverse="True" Duration="0:0:2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Label.Triggers>
+        </Label>
+        <Label Name="levelLabel" Canvas.Top="237" Canvas.Right="70" Height="100" Width="232" Canvas.Left="338" FontSize="40" FontFamily="Arial" Content="Level: 1" Foreground="Yellow">
+            <TextBlock.Foreground>
+                <SolidColorBrush x:Name="MySolidColorBrush2" Color="Crimson"/>
+            </TextBlock.Foreground>
+            
+            <Label.Triggers>
+                <EventTrigger RoutedEvent="TextBlock.Loaded">
+                    <BeginStoryboard>
+                        <Storyboard >
+                            <ColorAnimation Storyboard.TargetName="MySolidColorBrush2" Storyboard.TargetProperty="Color" From="Red" To="LawnGreen" RepeatBehavior="Forever" AutoReverse="True" Duration="0:0:2"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Label.Triggers>
+        </Label>
+        <Image Name="gameOverImage" Source="{StaticResource GameOver}" Opacity=".7" Visibility="Collapsed" Canvas.Top="200" Canvas.Left="-50" Height="200" Width="400" HorizontalAlignment="Left" Panel.ZIndex="10"/>
+
+        <Button Style="{StaticResource MyButtonStyle}" Opacity=".5" Visibility="Visible" Canvas.Top="545" Canvas.Left="370" Height="100" Name="Retry_Btn" Click="Retry_Btn_Click">
+            <Button.Template>
+                <ControlTemplate>
+                    <Image Name="RetryImage" Source="{StaticResource RetryImage}"/>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
+        <Grid Width="300" Height="600" Canvas.Top="35" Canvas.Left="5" Name="myGrid">
+            <Grid.Background>
+                <ImageBrush ImageSource="{StaticResource Grid}" Stretch="Fill"/>
+            </Grid.Background>
+
+            <!-- Rows -->
+            <Grid.RowDefinitions>
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+                <RowDefinition  />
+
+            </Grid.RowDefinitions>
+
+            <!--Columns-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <!--<Label Name ="label1" Grid.Column="5" Grid.Row="10" Background="SlateBlue"/>-->
+        </Grid>
+    </Canvas>
+</Window>

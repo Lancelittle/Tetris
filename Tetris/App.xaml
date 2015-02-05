@@ -1,0 +1,15 @@
+﻿<Application x:Class="Tetris.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ImageSource x:Key="Background">Images/BackgroundBlue.png</ImageSource>
+            <ImageSource x:Key="Grid">Images/GreenGrid.png</ImageSource>
+            <ImageSource x:Key="RetryImage">Images/Retry.png</ImageSource>
+            <ImageSource x:Key="TetrisLogo">Images/TetrisLogo5.png</ImageSource>
+            <ImageSource x:Key="GameOver">Images/GameOver.png</ImageSource>
+            <ImageSource x:Key="Icon">Images/Tetris.ico</ImageSource>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
